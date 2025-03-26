@@ -1,11 +1,23 @@
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class InGameUI : MonoBehaviour
 {
     public static InGameUI Instance;
 
     public GameObject PauseMenuPanel;
+
+    [SerializeField]
+    private Image _healthBarFillImage;
+    [SerializeField]
+    private Image _healthBarTrailingFillImage;
+
+    [SerializeField]
+    private float _trailDelay = 0.4f;
+
+
 
     private void Awake()
     {
@@ -14,10 +26,7 @@ public class InGameUI : MonoBehaviour
         else
             Destroy(this);
     }
-    private void Update()
-    {
-        Debug.Log(Time.timeScale);
-    }
+
     public void OpenPauseMenu(bool isPaused)
     {
         PauseMenuPanel.SetActive(isPaused);
@@ -43,5 +52,16 @@ public class InGameUI : MonoBehaviour
     public void SetTimeScale(float timeScale)
     {
         Time.timeScale = timeScale;
+    }
+    
+    public void UpdateHealthBar(float percentage)
+    {
+        float ratio = percentage / 100;
+        Sequence sequance = DOTween.Sequence();
+        sequance.Append(_healthBarFillImage.DOFillAmount(ratio, 0.25f)).SetEase(Ease.InOutSine);
+        sequance.AppendInterval(_trailDelay);
+
+        sequance.Append(_healthBarTrailingFillImage.DOFillAmount(ratio, 0.3f)).SetEase(Ease.InOutSine);
+        sequance.Play();
     }
 }
