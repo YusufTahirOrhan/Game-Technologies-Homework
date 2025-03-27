@@ -758,11 +758,11 @@ MonoBehaviour:
   ScenesPanel: {fileID: 175121229}
   SceneButtonContainer: {fileID: 397173121}
   SceneButtonPrefab: {fileID: 8775559279787688808, guid: dbe09a4301a0e734d908c659f2629809, type: 3}
-  sceneReferences:
-  - sceneAsset: {fileID: 102900000, guid: 41cb6fd5391093044973fe6248c38f08, type: 3}
-    sceneName: 1
-  - sceneAsset: {fileID: 102900000, guid: 41cb6fd5391093044973fe6248c38f08, type: 3}
-    sceneName: Coming Soon
+  SceneReferences:
+  - _sceneAsset: {fileID: 102900000, guid: 41cb6fd5391093044973fe6248c38f08, type: 3}
+    _sceneName: 1
+  - _sceneAsset: {fileID: 102900000, guid: 5c69d8f40443f5b4d865dc9f506cb06d, type: 3}
+    _sceneName: Coming Soon
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0

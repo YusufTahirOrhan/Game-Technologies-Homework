@@ -35,18 +35,9 @@ public class PlayerController : MonoBehaviour, IAttack, IDamageable
 
     void Update()
     {
-        if (_isDead && _isGrounded)
-        {
-            GetComponent<Collider2D>().enabled = false;
-            _rigidBody.gravityScale = 0;
-            _rigidBody.linearVelocity = Vector2.zero;
+        if (_isDead)
             return;
-        }
-        else if (_isDead)
-        {
-            return;
-        }
-        
+
         // Girişleri al
         _horizontalInput = Input.GetAxis("Horizontal");
 
@@ -124,7 +115,7 @@ public class PlayerController : MonoBehaviour, IAttack, IDamageable
         _animator.SetTrigger("Hurt");
         Debug.Log("Player " + damage + " hasar aldı!");
 
-        InGameUI.Instance.UpdateHealthBar((float) _currentHealth / (float) MaxHealth * 100f);
+        InGameUI.Instance.UpdateHealthBar((float)_currentHealth / (float)MaxHealth * 100f);
 
         if (_currentHealth <= 0)
         {
@@ -138,7 +129,15 @@ public class PlayerController : MonoBehaviour, IAttack, IDamageable
         _animator.SetTrigger("Die");
         Debug.Log("Player öldü!");
         _isDead = true;
-        
+
+        GetComponent<Collider2D>().enabled = false;
+        _rigidBody.gravityScale = 0;
+        _rigidBody.linearVelocity = Vector2.zero;
+
         this.enabled = false;
+
+        InGameUI.Instance.OpenLoseMenu();
+
+        Destroy(gameObject, 3);
     }
 }
