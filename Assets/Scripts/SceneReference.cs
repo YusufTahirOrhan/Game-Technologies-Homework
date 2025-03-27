@@ -7,17 +7,17 @@ using UnityEditor;
 public class SceneReference
 {
 #if UNITY_EDITOR
-    [SerializeField] private SceneAsset sceneAsset;
+    [SerializeField] private SceneAsset _sceneAsset;
 #endif
-    [SerializeField] private string sceneName;
+    [SerializeField] private string _sceneName;
 
 #if UNITY_EDITOR
     public void SetSceneAsset(SceneAsset asset)
     {
-        sceneAsset = asset;
-        sceneName = asset != null ? asset.name : string.Empty;
+        _sceneAsset = asset;
+        _sceneName = asset != null ? asset.name : string.Empty;
     }
 #endif
 
-    public string SceneName => sceneName;
+    public string SceneName => _sceneName;
 }

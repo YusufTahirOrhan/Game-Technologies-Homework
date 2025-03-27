@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class EnemyAttackRange : MonoBehaviour
 {
-    private EnemyController enemyController;
+    private EnemyController _enemyController;
 
     void Start()
     {
-        enemyController = GetComponentInParent<EnemyController>();
+        _enemyController = GetComponentInParent<EnemyController>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -14,7 +14,7 @@ public class EnemyAttackRange : MonoBehaviour
         // Sadece oyuncu ile etkileþim: Tag "Player" kontrol ediliyor
         if (collision.CompareTag("Player"))
         {
-            enemyController.SetChaseTarget(collision.transform);
+            _enemyController.SetChaseTarget(collision.transform);
         }
     }
 
@@ -22,7 +22,7 @@ public class EnemyAttackRange : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            enemyController.ClearChaseTarget();
+            _enemyController.ClearChaseTarget();
         }
     }
 }

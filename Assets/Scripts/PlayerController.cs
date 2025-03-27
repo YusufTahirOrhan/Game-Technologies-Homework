@@ -3,58 +3,72 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour, IAttack, IDamageable
 {
     [Header("Hareket Ayarları")]
-    public float moveSpeed = 5f;
-    public float jumpForce = 10f;
+    public float MoveSpeed = 5f;
+    public float JumpForce = 10f;
 
     [Header("Can Ayarları")]
-    public int maxHealth = 100;
-    private int currentHealth;
+    public int MaxHealth = 100;
+    private int _currentHealth;
 
     [Header("Saldırı Ayarları")]
-    public float attackCooldown = 1.3f;  // Saldırılar arası bekleme süresi
-    private float lastAttackTime = 0f;
+    public float AttackCooldown = 1.3f;  // Saldırılar arası bekleme süresi
+    private float _lastAttackTime = 0f;
 
     public Transform Character;
 
-    private Rigidbody2D rb;
-    private Animator anim;
-    private bool isGrounded = true;
+    private Rigidbody2D _rigidBody;
+    private Animator _animator;
+    private bool _isGrounded = true;
 
     // Input değerlerini saklamak için değişkenler
-    private float horizontalInput = 0f;
-    private bool jumpRequest = false;
+    private float _horizontalInput = 0f;
+    private bool _jumpRequest = false;
+
+    private bool _isDead = false;
 
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
-        currentHealth = maxHealth;
+        _rigidBody = GetComponent<Rigidbody2D>();
+        _animator = GetComponent<Animator>();
+        _currentHealth = MaxHealth;
     }
 
     void Update()
     {
+        if (_isDead && _isGrounded)
+        {
+            GetComponent<Collider2D>().enabled = false;
+            _rigidBody.gravityScale = 0;
+            _rigidBody.linearVelocity = Vector2.zero;
+            return;
+        }
+        else if (_isDead)
+        {
+            return;
+        }
+        
         // Girişleri al
-        horizontalInput = Input.GetAxis("Horizontal");
+        _horizontalInput = Input.GetAxis("Horizontal");
 
         // Karakterin dönmesi: hareket yönüne göre scale'ı güncelle
-        if (horizontalInput < -0.1f)
+        if (_horizontalInput < -0.1f)
         {
             // Sol tarafa bak
             Character.localScale = new Vector3(-Mathf.Abs(Character.lossyScale.x), Character.lossyScale.y, Character.lossyScale.z);
         }
-        else if (horizontalInput > 0.1f)
+        else if (_horizontalInput > 0.1f)
         {
             // Sağ tarafa bak
             Character.localScale = new Vector3(Mathf.Abs(Character.lossyScale.x), Character.lossyScale.y, Character.lossyScale.z);
         }
-        anim.SetBool("IsRunning", Mathf.Abs(horizontalInput) > 0.1f);
+        _animator.SetBool("IsRunning", Mathf.Abs(_horizontalInput) > 0.1f);
 
         // Zıplama kontrolü
-        if (Input.GetButtonDown("Jump") && isGrounded)
+        if (Input.GetButtonDown("Jump") && _isGrounded)
         {
-            jumpRequest = true;
-            anim.SetBool("IsGrounded", false);
-            anim.SetTrigger("Jump");
+            _jumpRequest = true;
+            _animator.SetBool("IsGrounded", false);
+            _animator.SetTrigger("Jump");
         }
 
         // Saldırı kontrolü
@@ -66,15 +80,18 @@ public class PlayerController : MonoBehaviour, IAttack, IDamageable
 
     void FixedUpdate()
     {
+        if (_isDead)
+            return;
+
         // Yatay hareket uygulama
-        rb.linearVelocity = new Vector2(horizontalInput * moveSpeed, rb.linearVelocity.y);
+        _rigidBody.linearVelocity = new Vector2(_horizontalInput * MoveSpeed, _rigidBody.linearVelocity.y);
 
         // Zıplama işlemi
-        if (jumpRequest)
+        if (_jumpRequest)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
-            isGrounded = false;
-            jumpRequest = false;
+            _rigidBody.linearVelocity = new Vector2(_rigidBody.linearVelocity.x, JumpForce);
+            _isGrounded = false;
+            _jumpRequest = false;
         }
     }
 
@@ -83,31 +100,33 @@ public class PlayerController : MonoBehaviour, IAttack, IDamageable
         // Yere temas kontrolü (Collider tag'ı "Ground" olmalı)
         if (collision.gameObject.CompareTag("Ground"))
         {
-            isGrounded = true;
-            anim.SetBool("IsGrounded", true);
+            _isGrounded = true;
+            _animator.SetBool("IsGrounded", true);
         }
     }
 
     public void Attack()
     {
         // Cooldown kontrolü: Eğer son saldırı cooldown süresi dolmamışsa, saldırıyı iptal et.
-        if (Time.time < lastAttackTime + attackCooldown)
+        if (Time.time < _lastAttackTime + AttackCooldown)
         {
             return;
         }
 
-        lastAttackTime = Time.time;
-        anim.SetTrigger("Attack");
+        _lastAttackTime = Time.time;
+        _animator.SetTrigger("Attack");
         Debug.Log("Player saldırıyor!");
     }
 
     public void TakeDamage(int damage)
     {
-        currentHealth -= damage;
-        anim.SetTrigger("Hurt");
+        _currentHealth -= damage;
+        _animator.SetTrigger("Hurt");
         Debug.Log("Player " + damage + " hasar aldı!");
 
-        if (currentHealth <= 0)
+        InGameUI.Instance.UpdateHealthBar((float) _currentHealth / (float) MaxHealth * 100f);
+
+        if (_currentHealth <= 0)
         {
             Die();
         }
@@ -115,8 +134,11 @@ public class PlayerController : MonoBehaviour, IAttack, IDamageable
 
     void Die()
     {
-        anim.SetTrigger("Die");
+        _animator.SetBool("IsDead", true);
+        _animator.SetTrigger("Die");
         Debug.Log("Player öldü!");
+        _isDead = true;
+        
         this.enabled = false;
     }
 }

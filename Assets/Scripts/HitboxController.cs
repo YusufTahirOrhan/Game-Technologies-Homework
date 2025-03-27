@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class HitboxController : DamageDealer
 {
-    public float activeTime = 0.2f; // Hitbox'ýn aktif kalma süresi
+    public float ActiveTime = 0.2f; // Hitbox'ýn aktif kalma süresi
 
     // Animasyon eventi tarafýndan çaðrýlabilir
     public void ActivateHitbox()
@@ -11,7 +11,7 @@ public class HitboxController : DamageDealer
         if (col != null)
         {
             col.enabled = true;
-            Invoke(nameof(DeactivateHitbox), activeTime);
+            Invoke(nameof(DeactivateHitbox), ActiveTime);
         }
     }
 

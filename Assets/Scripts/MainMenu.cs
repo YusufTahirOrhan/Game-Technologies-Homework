@@ -12,7 +12,7 @@ public class MainMenu : MonoBehaviour
     public Transform SceneButtonContainer;
 
     public GameObject SceneButtonPrefab;
-    public List<SceneReference> sceneReferences;
+    public List<SceneReference> SceneReferences;
 
     
 
@@ -42,7 +42,7 @@ public class MainMenu : MonoBehaviour
             Destroy(child.gameObject);
         }
         // Her sahne için buton oluþtur.
-        foreach (var sceneRef in sceneReferences)
+        foreach (var sceneRef in SceneReferences)
         {
             GameObject buttonObject = Instantiate(SceneButtonPrefab, SceneButtonContainer);
             Button button = buttonObject.GetComponent<Button>();
