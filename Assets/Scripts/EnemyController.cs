@@ -1,20 +1,33 @@
 using UnityEngine;
+using System.Collections;
 
 public class EnemyController : MonoBehaviour, IAttack, IDamageable
 {
-    [Header("Hareket ve Hasar Ayarlarý")]
+    [Header("Hareket Ayarlarý")]
     public float moveSpeed = 2f;
-    public int damage = 10;
+    public float idleWaitTime = 1.0f; // Noktada bekleme süresi
+
+    [Header("Saðlýk ve Hasar Ayarlarý")]
     public int maxHealth = 50;
-    [SerializeField]
     private int currentHealth;
+
+    [Header("Saldýrý Ayarlarý")]
+    public float attackCooldown = 1f; // Saldýrýlar arasý bekleme süresi
+    private float lastAttackTime = 0f;
+    public float attackRangeDistance = 1.5f; // Oyuncuya yeterince yaklaþýnca saldýrý yapýlacak mesafe
 
     [Header("Gezme Noktalarý")]
     public Transform[] movePoints; // Düþmanýn dolaþacaðý noktalar
     private int currentPointIndex = 0;
+    private bool isWaiting = false;
+
+    public Transform Character; // Sprite'ýn yönünü deðiþtirmek için referans
 
     private Rigidbody2D rb;
     private Animator anim;
+
+    // Takip modu için: Eðer oyuncu attack range içinde ise buraya atanýr.
+    private Transform chaseTarget;
 
     void Start()
     {
@@ -23,31 +36,92 @@ public class EnemyController : MonoBehaviour, IAttack, IDamageable
         currentHealth = maxHealth;
     }
 
-    // Fiziksel hareketleri FixedUpdate'de gerçekleþtiriyoruz.
     void FixedUpdate()
     {
-        if (movePoints.Length > 0)
+        // Eðer oyuncu takip modunda varsa
+        if (chaseTarget != null)
         {
-            Transform target = movePoints[currentPointIndex];
-            // Rigidbody'nin MovePosition metodunu kullanarak fiziksel hareket saðlanýr.
-            Vector2 newPosition = Vector2.MoveTowards(rb.position, target.position, moveSpeed * Time.fixedDeltaTime);
-            rb.MovePosition(newPosition);
+            Vector2 direction = ((Vector2)chaseTarget.position - rb.position).normalized;
+            rb.linearVelocity = direction * moveSpeed;
 
-            if (Vector2.Distance(rb.position, target.position) < 0.1f)
+            // Karakterin yönünü ayarla
+            if (direction.x < -0.1f)
             {
-                // Sonraki hedef noktaya geç
-                currentPointIndex = (currentPointIndex + 1) % movePoints.Length;
+                Character.localScale = new Vector3(-Mathf.Abs(Character.lossyScale.x), Character.lossyScale.y, Character.lossyScale.z);
             }
+            else if (direction.x > 0.1f)
+            {
+                Character.localScale = new Vector3(Mathf.Abs(Character.lossyScale.x), Character.lossyScale.y, Character.lossyScale.z);
+            }
+            anim.SetBool("IsRunning", true);
 
-            anim.SetFloat("Speed", Mathf.Abs(moveSpeed));
+            // Eðer oyuncuya yeterince yakýnsa saldýr
+            float dist = Vector2.Distance(rb.position, chaseTarget.position);
+            if (dist <= attackRangeDistance)
+            {
+                Attack();
+            }
+        }
+        else
+        {
+            // Takip modunda deðilse, patrol davranýþý
+            if (!isWaiting)
+            {
+                if (movePoints.Length > 0)
+                {
+                    Transform target = movePoints[currentPointIndex];
+                    Vector2 direction = ((Vector2)target.position - rb.position).normalized;
+                    rb.linearVelocity = direction * moveSpeed;
+
+                    if (direction.x < -0.1f)
+                    {
+                        Character.localScale = new Vector3(-Mathf.Abs(Character.lossyScale.x), Character.lossyScale.y, Character.lossyScale.z);
+                    }
+                    else if (direction.x > 0.1f)
+                    {
+                        Character.localScale = new Vector3(Mathf.Abs(Character.lossyScale.x), Character.lossyScale.y, Character.lossyScale.z);
+                    }
+
+                    // Noktaya ulaþýnca bekle
+                    if (Vector2.Distance(rb.position, target.position) < 0.1f)
+                    {
+                        StartCoroutine(WaitAtPoint());
+                    }
+                    anim.SetBool("IsRunning", true);
+                }
+                else
+                {
+                    anim.SetBool("IsRunning", false);
+                    rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+                }
+            }
+            else
+            {
+                rb.linearVelocity = Vector2.zero;
+                anim.SetBool("IsRunning", false);
+            }
         }
     }
 
+    IEnumerator WaitAtPoint()
+    {
+        isWaiting = true;
+        rb.linearVelocity = Vector2.zero;
+        anim.SetBool("IsRunning", false);
+        yield return new WaitForSeconds(idleWaitTime);
+        currentPointIndex = (currentPointIndex + 1) % movePoints.Length;
+        isWaiting = false;
+    }
+
+    // Saldýrý metodunda cooldown mekanizmasý
     public void Attack()
     {
+        if (Time.time < lastAttackTime + attackCooldown)
+            return;
+
+        lastAttackTime = Time.time;
         anim.SetTrigger("Attack");
         Debug.Log("Düþman saldýrýyor!");
-        // Burada oyuncu ile mesafe kontrolü yapýlarak oyuncuya hasar verebilirsin.
     }
 
     public void TakeDamage(int damageAmount)
@@ -64,8 +138,19 @@ public class EnemyController : MonoBehaviour, IAttack, IDamageable
 
     void Die()
     {
-        anim.SetBool("IsDead", true);
+        anim.SetTrigger("Die");
         Debug.Log("Düþman öldü!");
         Destroy(gameObject, 2f);
+    }
+
+    // Bu metodlar, AttackRange collider'ýna baðlý script tarafýndan çaðrýlacak
+    public void SetChaseTarget(Transform target)
+    {
+        chaseTarget = target;
+    }
+
+    public void ClearChaseTarget()
+    {
+        chaseTarget = null;
     }
 }
