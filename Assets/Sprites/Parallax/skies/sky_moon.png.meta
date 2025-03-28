@@ -309,7 +309,15 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      sky_moon_0: -472554289198395637
+      sky_moon_1: -6515525909572670540
+      sky_moon_2: -3121300802048251918
+      sky_moon_3: 6194410983329242812
+      sky_moon_4: 1655848437112945793
+      sky_moon_5: 736406295197027732
+      sky_moon_6: 1422006401358846412
+      sky_moon_7: -9131981383425037443
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

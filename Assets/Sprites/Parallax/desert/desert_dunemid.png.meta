@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      desert_dunemid_0: 1456023759624062164
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
