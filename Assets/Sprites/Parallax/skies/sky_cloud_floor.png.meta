@@ -1,10 +1,16 @@
 fileFormatVersion: 2
-guid: 0131468479e016348ad74e3a844c10e1
+guid: 0e5d9f3aa93427745b7c608d82acef6b
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3741135048667589570
-    second: header_failed_0
+      213: -2473347284527554481
+    second: sky_cloud_floor_0
+  - first:
+      213: 4133937034158314552
+    second: sky_cloud_floor_1
+  - first:
+      213: 3089061161158656302
+    second: sky_cloud_floor_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +106,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: header_failed_0
+      name: sky_cloud_floor_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 394
-        height: 162
+        y: 16
+        width: 126
+        height: 109
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +121,52 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e34976f9e71d41cc0800000000000000
-      internalID: -3741135048667589570
+      spriteID: f40ee83cfb7ecadd0800000000000000
+      internalID: -2473347284527554481
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sky_cloud_floor_1
+      rect:
+        serializedVersion: 2
+        x: 463
+        y: 40
+        width: 795
+        height: 115
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 83496dc74d1be5930800000000000000
+      internalID: 4133937034158314552
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sky_cloud_floor_2
+      rect:
+        serializedVersion: 2
+        x: 1687
+        y: 0
+        width: 213
+        height: 154
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e21415072cc8eda20800000000000000
+      internalID: 3089061161158656302
       vertices: []
       indices: 
       edges: []
@@ -134,8 +184,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      header_failed_0: -3741135048667589570
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

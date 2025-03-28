@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 0131468479e016348ad74e3a844c10e1
+guid: 19d609d5ad15f7c48817570c0b2c5543
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3741135048667589570
-    second: header_failed_0
+      213: -7843777681833398897
+    second: desert_sky_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: header_failed_0
+      name: desert_sky_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 394
-        height: 162
+        y: 353
+        width: 1900
+        height: 647
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e34976f9e71d41cc0800000000000000
-      internalID: -3741135048667589570
+      spriteID: f8dee29a1cd452390800000000000000
+      internalID: -7843777681833398897
       vertices: []
       indices: 
       edges: []
@@ -134,8 +134,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      header_failed_0: -3741135048667589570
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

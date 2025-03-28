@@ -1,10 +1,13 @@
 fileFormatVersion: 2
-guid: 0131468479e016348ad74e3a844c10e1
+guid: bfe703db9b45dff43abff4a13bf567e5
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3741135048667589570
-    second: header_failed_0
+      213: -2213410874223309457
+    second: desert_dunefrontt_0
+  - first:
+      213: 434093559233846205
+    second: desert_dunefrontt_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +103,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: header_failed_0
+      name: desert_dunefrontt_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 336
         y: 0
-        width: 394
-        height: 162
+        width: 1561
+        height: 216
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +118,30 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e34976f9e71d41cc0800000000000000
-      internalID: -3741135048667589570
+      spriteID: f6dceeb79826841e0800000000000000
+      internalID: -2213410874223309457
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: desert_dunefrontt_1
+      rect:
+        serializedVersion: 2
+        x: 2400
+        y: 0
+        width: 970
+        height: 144
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dbb1b6dcac5360600800000000000000
+      internalID: 434093559233846205
       vertices: []
       indices: 
       edges: []
@@ -134,8 +159,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      header_failed_0: -3741135048667589570
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
